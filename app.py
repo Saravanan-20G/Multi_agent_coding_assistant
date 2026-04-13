@@ -1,6 +1,3 @@
-import streamlit as st
-
-st.write("SECRETS:", dict(st.secrets))
 
 import streamlit as st
 import json
