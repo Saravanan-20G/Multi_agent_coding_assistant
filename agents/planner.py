@@ -4,18 +4,22 @@
 # import os, json
 
 # load_dotenv()
-
-import os
+from langchain_openai import ChatOpenAI
 import streamlit as st
+import os
 
-api_key = os.getenv("GROQ_API_KEY") or st.secrets["GROQ_API_KEY"]
+def get_llm():
+    api_key = os.getenv("GROQ_API_KEY") or st.secrets.get("GROQ_API_KEY")
 
-llm = ChatOpenAI(
-    base_url="https://api.groq.com/openai/v1",
-    api_key=os.getenv("GROQ_API_KEY"),
-    model="llama-3.3-70b-versatile",
-    temperature=0
-)
+    if not api_key:
+        raise ValueError("GROQ_API_KEY not found in environment or Streamlit secrets")
+
+    return ChatOpenAI(
+        base_url="https://api.groq.com/openai/v1",
+        api_key=api_key,
+        model="llama-3.3-70b-versatile",
+        temperature=0
+    )
 
 def planner_agent(task: str):
         prompt = f"""
