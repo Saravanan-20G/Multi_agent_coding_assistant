@@ -4,15 +4,20 @@
 # import os, json
 
 # load_dotenv()
-from langchain_openai import ChatOpenAI
-import streamlit as st
-import os
+
 
 def get_llm():
-    api_key = os.getenv("GROQ_API_KEY") or st.secrets.get("GROQ_API_KEY")
+    import os
+    import streamlit as st
+    from langchain_openai import ChatOpenAI
+
+    api_key = os.getenv("GROQ_API_KEY")
 
     if not api_key:
-        raise ValueError("GROQ_API_KEY not found in environment or Streamlit secrets")
+        try:
+            api_key = st.secrets["GROQ_API_KEY"]
+        except:
+            raise ValueError("GROQ_API_KEY not found in environment or Streamlit secrets")
 
     return ChatOpenAI(
         base_url="https://api.groq.com/openai/v1",
