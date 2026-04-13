@@ -71,6 +71,7 @@ def planner_agent(task: str):
     Task:
     {task}
     """
+        llm = get_llm()
         res = llm.invoke(prompt).content
         print("RAW:", res)  # keep for debugging
 
