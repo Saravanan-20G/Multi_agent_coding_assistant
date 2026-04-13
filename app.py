@@ -1,6 +1,3 @@
-import streamlit as st
-
-api_key = st.secrets["GROQ_API_KEY"]
 
 import streamlit as st
 import json
@@ -163,6 +160,10 @@ run = st.button("Generate Project")
 # =========================
 # RUN PIPELINE
 # =========================
+import streamlit as st
+
+api_key = st.secrets["GROQ_API_KEY"]
+
 if run and user_input:
 
     # STEP 1
