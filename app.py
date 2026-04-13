@@ -1,3 +1,6 @@
+import streamlit as st
+
+api_key = st.secrets["GROQ_API_KEY"]
 
 import streamlit as st
 import json
