@@ -5,17 +5,25 @@
 # load_dotenv()
 
 # api_key = os.getenv("GROQ_API_KEY")
-import os
-import streamlit as st
+def get_llm():
+    import os
+    import streamlit as st
+    from langchain_openai import ChatOpenAI
 
-api_key = os.getenv("GROQ_API_KEY") or st.secrets["GROQ_API_KEY"]
+    api_key = os.getenv("GROQ_API_KEY")
 
-llm = ChatOpenAI(
-    base_url="https://api.groq.com/openai/v1",
-    api_key=api_key,
-    model="llama-3.3-70b-versatile",
-    temperature=0
-)
+    if not api_key:
+        try:
+            api_key = st.secrets["GROQ_API_KEY"]
+        except:
+            raise ValueError("GROQ_API_KEY not found in environment or Streamlit secrets")
+
+    return ChatOpenAI(
+        base_url="https://api.groq.com/openai/v1",
+        api_key=api_key,
+        model="llama-3.3-70b-versatile",
+        temperature=0
+    )
 
 # ✅ FIXED: Proper directory creation
 def write_file(project_name, file_name, content):
