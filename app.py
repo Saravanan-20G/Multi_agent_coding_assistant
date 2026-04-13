@@ -1,4 +1,8 @@
 import streamlit as st
+
+st.write("SECRETS:", dict(st.secrets))
+
+import streamlit as st
 import json
 from agents.planner import planner_agent
 from agents.architect import architect_agent
