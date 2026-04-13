@@ -22,7 +22,7 @@ def get_llm():
     return ChatOpenAI(
         base_url="https://api.groq.com/openai/v1",
         api_key=api_key,
-        model="llama-3.3-70b-versatile",
+        model="llama3-70b-8192",
         temperature=0
     )
 
@@ -77,8 +77,15 @@ def planner_agent(task: str):
     {task}
     """
         llm = get_llm()
-        res = llm.invoke(prompt).content
-        print("RAW:", res)  # keep for debugging
+        try:
+            response = llm.invoke(prompt)
+            print("FULL RESPONSE:", response)
+            res = response.content
+        except Exception as e:
+            import traceback
+            print("ERROR:", str(e))
+            print(traceback.format_exc())
+            raise
 
         data = extract_json(res)
 
