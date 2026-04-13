@@ -165,16 +165,15 @@ import streamlit as st
 api_key = st.secrets["GROQ_API_KEY"]
 
 if run and user_input:
-
-    # STEP 1
-    st.session_state.plan = planner_agent(user_input, api_key)
+    st.session_state.user_input = user_input
+    st.session_state.step = "planner"
     st.rerun()
 
 # HANDLE EACH STEP SEPARATELY
 
 if st.session_state.step == "planner":
     with st.spinner("🧠 Planning..."):
-        st.session_state.plan = planner_agent(user_input)
+        st.session_state.plan = planner_agent(user_input, api_key)
 
     st.session_state.step = "architect"
     st.rerun()
