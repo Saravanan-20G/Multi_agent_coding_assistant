@@ -76,7 +76,12 @@ def planner_agent(task: str,api_key: str):
     Task:
     {task}
     """
-        llm = get_llm()
+        llm = ChatOpenAI(
+        base_url="https://api.groq.com/openai/v1",
+        api_key=api_key,
+        model="llama3-70b-8192",
+        temperature=0
+    )
         try:
             response = llm.invoke(prompt)
             print("FULL RESPONSE:", response)
