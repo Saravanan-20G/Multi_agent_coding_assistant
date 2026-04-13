@@ -26,7 +26,7 @@ def get_llm():
         temperature=0
     )
 
-def planner_agent(task: str):
+def planner_agent(task: str,api_key: str):
         prompt = f"""
     You are a senior AI/ML Architect.
 
