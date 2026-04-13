@@ -166,7 +166,7 @@ run = st.button("Generate Project")
 if run and user_input:
 
     # STEP 1
-    st.session_state.step = "planner"
+    st.session_state.plan = planner_agent(user_input, api_key)
     st.rerun()
 
 # HANDLE EACH STEP SEPARATELY
