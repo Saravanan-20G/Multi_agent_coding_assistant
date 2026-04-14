@@ -15,7 +15,7 @@ def extract_json(text: str):
 
 def planner_agent(task: str, api_key: str):
     prompt = f"""
-You are a senior AI/ML Architect.
+You are a software planning assistant.
 
 Design a REAL system.
 
