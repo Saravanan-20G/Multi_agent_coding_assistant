@@ -24,39 +24,23 @@ def coder_agent(plan: dict, architecture: dict, api_key: str):
 
     for file in files:
         prompt = f"""
-You are a professional software developer.
+        You are a professional software developer.
 
-Generate content for the given file.
 
-RULES:
+        Generate complete code for the file: {file}
 
-IF input_spec.format == "pdf":
-- Use PyPDFLoader(file_path)
-- Build RAG pipeline
-- Include retriever
 
-IF input_spec.format == "csv":
-- Use pandas.read_csv()
-- Perform EDA, preprocessing, training
+        Project details:
+        {plan}
 
-IF input_spec.format == "image":
-- Use OpenCV or PIL
 
-ALWAYS:
-- Start from input handling
-- Then follow pipeline stages
+        Rules:
+        - Return ONLY code
+        - No explanations
+        - No markdown (no ```)
 
-Project Input:
-{plan.get("input_spec")}
 
-Project pipeline:
-{plan.get("pipeline")}
-
-File:
-{file}
-
-Return ONLY content. No markdown.
-"""
+        """
         response = llm.invoke(prompt).content
         cleaned = response.replace("```", "").strip()
         write_file(project_name, file, cleaned)
