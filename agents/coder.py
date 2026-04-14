@@ -1,5 +1,5 @@
 import os
-from langchain_openai import ChatOpenAI
+from langchain_groq import ChatGroq
 
 
 def write_file(project_name, file_name, content):
@@ -16,16 +16,13 @@ def coder_agent(plan: dict, architecture: dict, api_key: str):
     project_name = plan["project_name"].lower().replace(" ", "_")
     files = architecture["files"]
 
-    llm = ChatOpenAI(
-        base_url="https://api.groq.com/openai/v1",
+    llm = ChatGroq(
         api_key=api_key,
         model="llama-3.3-70b-versatile",
         temperature=0
     )
 
     for file in files:
-        print(f"Generating {file}...")
-
         prompt = f"""
 You are a senior AI/ML Engineer.
 
@@ -60,13 +57,11 @@ File:
 
 Return ONLY content. No markdown.
 """
-
         response = llm.invoke(prompt).content
         cleaned = response.replace("```", "").strip()
         write_file(project_name, file, cleaned)
 
     return f"Project '{project_name}' created successfully!"
-
 
 # def get_llm():
 #     import os
