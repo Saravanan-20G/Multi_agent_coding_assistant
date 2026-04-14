@@ -15,52 +15,24 @@ def extract_json(text: str):
 
 def planner_agent(task: str, api_key: str):
     prompt = f"""
-You are a software planning assistant.
+    You are a software planning assistant.
 
-Design a REAL system.
 
-STEP 1: Identify project type:
-- rag_pipeline → requires PDF input
-- ml_pipeline → requires CSV dataset
-- nlp_pipeline → text input
-- cv_pipeline → image input
+    Return ONLY valid JSON.
+    Do NOT include markdown (no ```).
 
-STEP 2: Define INPUT SPEC clearly
-STEP 3: Build MULTI-STAGE pipeline
 
-IMPORTANT RULES:
-
-IF rag_pipeline:
-- input must be PDF
-- use PyPDFLoader, TextSplitter, Embeddings, FAISS
-
-IF ml_pipeline:
-- input must be CSV
-- include preprocessing, EDA, feature engineering, train/test split, model training, evaluation
-
-RETURN ONLY JSON:
-
-{{
-  "project_name": "string",
-  "project_type": "...",
-  "input_spec": {{
-    "type": "file",
-    "format": "pdf | csv | image | text",
-    "description": "what user must provide"
-  }},
-  "pipeline": [
+    JSON format:
     {{
-      "stage": "name",
-      "purpose": "what it does",
-      "tools": ["library"]
+        "project_name": "string",
+        "features": ["feature1", "feature2"],
+        "tech_stack": ["tech1", "tech2"]
     }}
-  ]
-}}
 
-Task:
-{task}
-"""
 
+    Request:
+    {task}
+    """
     llm = ChatGroq(
         api_key=api_key,
         model="llama-3.3-70b-versatile",
