@@ -1,14 +1,13 @@
 import re
 import json
-from langchain_openai import ChatOpenAI
+from langchain_groq import ChatGroq
 
 
 def extract_json(text: str):
     try:
-        match = re.search(r'\{.*\}', text, re.DOTALL)
+        match = re.search(r"\{.*\}", text, re.DOTALL)
         if match:
-            json_str = match.group()
-            return json.loads(json_str)
+            return json.loads(match.group())
         return {"error": "No JSON found"}
     except Exception as e:
         return {"error": f"Parsing failed: {str(e)}"}
@@ -27,7 +26,6 @@ STEP 1: Identify project type:
 - cv_pipeline → image input
 
 STEP 2: Define INPUT SPEC clearly
-
 STEP 3: Build MULTI-STAGE pipeline
 
 IMPORTANT RULES:
@@ -63,25 +61,14 @@ Task:
 {task}
 """
 
-    llm = ChatOpenAI(
-        base_url="https://api.groq.com/openai/v1",
+    llm = ChatGroq(
         api_key=api_key,
         model="llama-3.3-70b-versatile",
         temperature=0
     )
 
-    try:
-        response = llm.invoke(prompt)
-        res = response.content
-    except Exception as e:
-        import traceback
-        print("ERROR:", str(e))
-        print(traceback.format_exc())
-        raise
-
-    return extract_json(res)
-
-
+    response = llm.invoke(prompt)
+    return extract_json(response.content)
 
 
 # def get_llm():
