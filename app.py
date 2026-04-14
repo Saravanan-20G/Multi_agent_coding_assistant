@@ -1,12 +1,11 @@
 
 import streamlit as st
-import json
+import os
+import sys
 from agents.planner import planner_agent
 from agents.architect import architect_agent
 from agents.coder import coder_agent
 
-import sys
-import os
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 # =========================
@@ -167,13 +166,14 @@ api_key = st.secrets["GROQ_API_KEY"]
 if run and user_input:
     st.session_state.user_input = user_input
     st.session_state.step = "planner"
+    st.session_state.done = False
     st.rerun()
 
 # HANDLE EACH STEP SEPARATELY
 
 if st.session_state.step == "planner":
     with st.spinner("🧠 Planning..."):
-        st.session_state.plan = planner_agent(user_input, api_key)
+        st.session_state.plan = planner_agent(st.session_state.user_input, api_key)
 
     st.session_state.step = "architect"
     st.rerun()
@@ -189,7 +189,7 @@ elif st.session_state.step == "architect":
 
 elif st.session_state.step == "coder":
     with st.spinner("⚡ Generating Code..."):
-        coder_agent(st.session_state.plan, st.session_state.arch)
+        coder_agent(st.session_state.plan, st.session_state.arch, api_key)
 
     st.session_state.step = "done"
     st.session_state.done = True
